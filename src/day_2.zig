@@ -22,19 +22,7 @@ pub fn execute(gpa: std.mem.Allocator) !void {
             var slice_to_compare_buf: [32]u8 = undefined;
             const slice_to_compare = try std.fmt.bufPrint(&slice_to_compare_buf, "{}", .{counter});
 
-            if (slice_to_compare.len % 2 != 0) {
-                counter += 1;
-                continue;
-            }
-
-            const split: usize = @divExact(slice_to_compare.len, 2);
-            const first_half = slice_to_compare[0..split];
-            const second_half = slice_to_compare[split..];
-
-            if (std.mem.eql(u8, first_half, second_half)) {
-                total_sum += counter;
-            }
-
+            var is_invalid = false;
             var divisor: usize = 1;
             while (divisor < slice_to_compare.len) {
                 if (slice_to_compare.len % divisor != 0) {
@@ -42,14 +30,33 @@ pub fn execute(gpa: std.mem.Allocator) !void {
                     continue;
                 }
 
-                var start: usize = 0;
-                var end: usize = divisor;
+                const pattern = slice_to_compare[0..divisor];
+                var all_match = true;
+                var start: usize = divisor;
+                var end: usize = start + divisor;
 
-                while (end < slice_to_compare.len) {
-                    const slice = slice_to_compare[start..end];
+                while (end <= slice_to_compare.len) {
+                    const is_matched = std.mem.eql(u8, pattern, slice_to_compare[start..end]);
+
+                    if (!is_matched) {
+                        all_match = false;
+                        break;
+                    }
+
+                    start += divisor;
+                    end += divisor;
+                }
+
+                if (all_match) {
+                    is_invalid = true;
+                    break;
                 }
 
                 divisor += 1;
+            }
+
+            if (is_invalid) {
+                total_sum += counter;
             }
 
             counter += 1;
