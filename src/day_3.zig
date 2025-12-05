@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub fn execute(gpa: std.mem.Allocator) !void {
+pub fn execute_part1(gpa: std.mem.Allocator) !void {
     const file = try std.fs.cwd().openFile("src/day_3_input.txt", .{});
     defer file.close();
 
@@ -71,3 +71,34 @@ pub fn execute(gpa: std.mem.Allocator) !void {
 
     std.debug.print("{d}", .{total});
 }
+
+pub fn execute_part2(gpa: std.mem.Allocator) !void {
+    const file = try std.fs.cwd().openFile("src/day_3_input.txt", .{});
+    defer file.close();
+
+    const input_text = try file.readToEndAlloc(gpa, 1024 * 1024);
+
+    var lines = std.mem.tokenizeAny(u8, input_text, "\n");
+
+    while (lines.next()) |line| {
+        var current_largest_num: u8 = 0 + 48;
+        var position: u8 = 0;
+        const size: usize = 12;
+
+        while (position + size <= line.len) {
+            if (line[position] == 57) {
+                current_largest_num = 57;
+                break;
+            }
+
+            if (current_largest_num < line[position]) {
+                current_largest_num = line[position];
+            }
+
+            position += 1;
+        }
+    }
+}
+
+// find the biggest starting number where it has extra spaces +12
+//

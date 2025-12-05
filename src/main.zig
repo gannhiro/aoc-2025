@@ -7,5 +7,6 @@ pub fn main() !void {
     const gpa = std.heap.page_allocator;
     // try day_1.execute(gpa);
     // try day_2.execute(gpa);
-    try day_3.execute(gpa);
+    // try day_3.execute_part1(gpa);
+    try day_3.execute_part2(gpa);
 }
