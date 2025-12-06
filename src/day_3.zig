@@ -1,10 +1,11 @@
 const std = @import("std");
 
 pub fn execute_part1(gpa: std.mem.Allocator) !void {
-    const file = try std.fs.cwd().openFile("src/day_3_input.txt", .{});
+    const file = try std.fs.cwd().openFile("src/inputs/day_3_input.txt", .{});
     defer file.close();
 
     const input_text = try file.readToEndAlloc(gpa, 1024 * 1024);
+    defer gpa.free(input_text);
 
     var lines = std.mem.tokenizeAny(u8, input_text, "\n");
 
@@ -73,10 +74,11 @@ pub fn execute_part1(gpa: std.mem.Allocator) !void {
 }
 
 pub fn execute_part2(gpa: std.mem.Allocator) !void {
-    const file = try std.fs.cwd().openFile("src/day_3_input.txt", .{});
+    const file = try std.fs.cwd().openFile("src/inputs/day_3_input.txt", .{});
     defer file.close();
 
     const input_text = try file.readToEndAlloc(gpa, 1024 * 1024);
+    defer gpa.free(input_text);
 
     var lines = std.mem.tokenizeAny(u8, input_text, "\n");
 

@@ -8,6 +8,7 @@ pub fn execute(gpa: std.mem.Allocator) !void {
     defer file.close();
 
     const input_text = try file.readToEndAlloc(gpa, 1024 * 1024);
+    defer gpa.free(input_text);
 
     var lines = std.mem.tokenizeAny(u8, input_text, "\n");
 

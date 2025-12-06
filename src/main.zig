@@ -5,10 +5,12 @@ const day_3 = @import("day_3.zig");
 const day_4 = @import("day_4.zig");
 
 pub fn main() !void {
-    const gpa = std.heap.page_allocator;
-    // try day_1.execute(gpa);
-    // try day_2.execute(gpa);
-    // try day_3.execute_part1(gpa);
-    // try day_3.execute_part2(gpa);
-    try day_4.execute(gpa);
+    var gpa = std.heap.GeneralPurposeAllocator(.{}).init;
+    defer _ = gpa.deinit();
+
+    // try day_1.execute(gpa.allocator());
+    // try day_2.execute(gpa.allocator());
+    // try day_3.execute_part1(gpa.allocator());
+    // try day_3.execute_part2(gpa.allocator());
+    try day_4.execute(gpa.allocator());
 }

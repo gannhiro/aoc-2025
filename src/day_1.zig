@@ -4,10 +4,11 @@ pub fn execute(gpa: std.mem.Allocator) !void {
     const max: i32 = 100;
     const left = "L"[0];
 
-    const file = try std.fs.cwd().openFile("src/day_1_input.txt", .{});
+    const file = try std.fs.cwd().openFile("src/inputs/day_1_input.txt", .{});
     defer file.close();
 
     const input_text = try file.readToEndAlloc(gpa, 1024 * 1024);
+    defer gpa.free(input_text);
 
     var lines = std.mem.tokenizeAny(u8, input_text, "\n");
 
