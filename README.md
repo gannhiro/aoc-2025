@@ -5,3 +5,4 @@ Zig is so fun to build with and I have learned so much with zig, low-level conce
 
 ## Bad news! Day 3 part 2 is too hard for me!
 ☺️ it's too hard! might have to watch some videos for it!
+Edit: 12/06/2026, solved it, time to move on!
