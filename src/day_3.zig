@@ -80,25 +80,32 @@ pub fn execute_part2(gpa: std.mem.Allocator) !void {
 
     var lines = std.mem.tokenizeAny(u8, input_text, "\n");
 
+    var total_amount: u64 = 0;
+
     while (lines.next()) |line| {
-        var current_largest_num: u8 = 0 + 48;
-        var position: u8 = 0;
         const size: usize = 12;
+        var final_slice = [_]u8{0} ** size;
+        var final_slice_pos: usize = 0;
+        var scan_index: usize = 0;
 
-        while (position + size <= line.len) {
-            if (line[position] == 57) {
-                current_largest_num = 57;
-                break;
+        while (final_slice_pos < size) {
+            const end_index = line.len - (size - final_slice_pos) + 1;
+            var position: usize = scan_index;
+
+            while (position < end_index) {
+                if (final_slice[final_slice_pos] < line[position]) {
+                    final_slice[final_slice_pos] = line[position];
+                    scan_index = position + 1;
+                }
+                position += 1;
             }
 
-            if (current_largest_num < line[position]) {
-                current_largest_num = line[position];
-            }
-
-            position += 1;
+            final_slice_pos += 1;
         }
-    }
-}
 
-// find the biggest starting number where it has extra spaces +12
-//
+        const num = try std.fmt.parseUnsigned(u64, &final_slice, 10);
+        total_amount += num;
+    }
+
+    std.debug.print("{d}\n", .{total_amount});
+}
